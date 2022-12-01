@@ -53,6 +53,7 @@ displayDate.append(p1);
 // To get random words from the array
 function randomWord() {
     let word = words[Math.floor(Math.random() * words.length)];
+    words.splice(word, 1);
     return word;
 };
 
@@ -79,33 +80,17 @@ function appendWord() {
             selectedWord.innerText = randomWord();
             count++;
 
-            const score = new Score(datePost, array.length, calcpercent() );
-            console.log(score);
+            const score = new Score(datePost, array.length, calcpercent());
             percent.innerText = `Percentage: ${score.percentage}%`
         }
     });
 }
 
-// let countdownTime = 99;
-// let timerInt = setInterval(countdown, 1000);
-
-// function countdown() {
-//     if (countdownTime === -1) {
-//     clearTimeout(timerInt);
-//     startAudio.pause();
-//     displayBoard();
-//     } else {
-//     timer.innerText = countdownTime;
-//     countdownTime--;
-//     }
-// }
-
-
 let countdownTime = 99;
 let timeinterval;
 let isStarted = true;
 
-// Function to start Timer
+// Function to start Timer and Display Timer
 function startTimer() {
   if (isStarted) {
     isStarted = false;
@@ -137,8 +122,8 @@ function displayBoard() {
     overlay.style.display = "block";
 }
 
-// Event listeners
 
+// Event listeners
 onEvent('click', restart, () => {
     window.location.reload()
 })

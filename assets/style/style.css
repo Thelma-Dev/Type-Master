@@ -166,7 +166,6 @@ button:hover {
     right: 38%;
     display: flex;
     flex-direction: column;
-    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     display: none;
     transition: all 0.3s ease-in-out;
 }
