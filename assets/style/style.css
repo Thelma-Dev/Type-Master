@@ -66,6 +66,7 @@ main {
     color: #f2f4f6;
     line-height: 52px;
     cursor: default;
+    user-select: none;
 }
 
 form {
