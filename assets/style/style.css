@@ -3,17 +3,14 @@
 :root {
     --app-dark-bg:#1a1d28;
     --app-light-bg: #f0f4f6;
-    --app-purple:#833cff;
-    --app-purple-hover:#7325fa;
     --app-orange:#ff833c;
     --app-orange-hover:#f87325;
-    --app-border-radius: 6px;
+    --app-border-radius: 10px;
     --text-color: #f2f4f6;
 }
 
 body {
-    background: #fff url("../img/background.jpg") center center / cover no-repeat;
-    /* background-color: var(--app-purple); */
+    background: rgb(54, 54, 54, 0.4) url("../img/background.jpg") center center / cover no-repeat;
     height: 100vh;
     overflow: hidden;
 }
@@ -53,8 +50,8 @@ main {
     width: 350px;
     height: 50px;
     padding: 0 15px;
-    border-radius: var(--app-border-radius);
-    background-color: rgba(59, 59, 59, 0.8);
+    border-radius: 24px;
+    background-color: rgba(59, 59, 59, 1);
     box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.2) inset, -1px -1px 1px 0 rgba(255, 255, 255, 0.1) inset;
     text-align: center;
     margin-inline: auto;
@@ -85,15 +82,20 @@ input[type="text"] {
     width: 350px;
     height: 48px;
     padding: 0 15px;
-    border: 2px solid rgba(161, 161, 161, 0.9);
-    background-color: rgba(59, 59, 59, 0.6);
-    border-radius: 6px;
+    border: 3px solid rgba(161, 161, 161, 0.5);
+    background-color: rgba(59, 59, 59, 0.7);
+    border-radius: 24px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 26px 30px -10px, rgba(0, 0, 0, 0.1) 0px 16px 10px -10px;
     font-size: 16px;
     font-weight: 400;
     color: #fff;
     text-align: center;
     margin-inline: auto;
+    transition: all 0.25s ease-in;
+}
+
+input[type="text"]:focus {
+    border: 3px solid rgba(161, 161, 161, 0.9);
 }
 
 input::placeholder {
@@ -119,13 +121,13 @@ input::placeholder {
     color: #fff;
     cursor: pointer;
     position: fixed;
-    top: 10%;
+    top: 7%;
     right: 20%;
 }
 
 #restart {
     position: fixed;
-    top: 10%;
+    top: 7%;
     left: 20%;
     visibility: hidden;
     opacity:0;
@@ -282,15 +284,16 @@ button:hover {
     cursor: default;
 }
 
-/* Styling Time */
-
+/* -------------------------- */
+/*           Timer           */
+/* --------------------------*/
 .timer {
     border: none;
     width: 100px;
     height: 100px;
     border-radius: 50%;
     position: fixed;
-    top: 7%;
+    top: 3%;
     right: 25%;
     background-color: #fff;
     font-size: 40px; 
@@ -301,3 +304,100 @@ button:hover {
     display: none;
 }
 
+/* -------------------------- */
+/*           Modal           */
+/* --------------------------*/
+
+.modal {
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background-color: rgba(0, 0, 0, 0.5);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px 0px);
+    transition: all 0.2s ease-in-out;
+}
+
+.modal.is-visible {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0px);
+}
+  
+.content {
+    background-color: rgba(12, 12, 12, 0.9);
+    margin: 10% auto;
+    padding: 25px;
+    border: none;
+    width: 80%;
+    height: 300px
+}
+
+.intro, .more-intro {
+    margin-top: 20px;
+    border-right: solid 5px rgba(255, 255, 255, .75);
+    white-space: nowrap;
+    overflow: hidden;     
+    font-size: 25px;
+    color: rgba(255, 255, 255,.7);
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+}
+
+.intro.is-visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.more-intro.is-visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.intro {
+    animation: animated-text 4s linear 1s 1 normal both,
+               animated-cursor 600ms linear infinite;
+}
+
+.more-intro {
+    animation: animated-text 5s linear 1s 1 normal both,
+               animated-cursor 600ms linear infinite;
+}
+  
+  
+@keyframes animated-text{
+    from{width: 0;}
+    to{width: 100%;}
+}
+  
+@keyframes animated-cursor{
+    from{border-right-color: rgba(255,255,255,.75);}
+    to{border-right-color: transparent;}
+}
+
+.content h2 {
+    font-size: 35px;
+    color: #fff;
+    text-align: center;
+}
+  
+.close-modal {
+    color: #f2f4f6;
+    font-size: 30px;
+    font-weight: 600;
+    position:absolute;
+    top: 22%;
+    right: 11%;
+}
+  
+.close-modal:hover, .close-modal:focus {
+    color: #af0707;
+    text-decoration: none;
+    cursor: pointer;
+}

@@ -86,19 +86,46 @@ function appendWord() {
     });
 }
 
-let countdownTime = 99;
-let timerId = setInterval(countdown, 1000);
+// let countdownTime = 99;
+// let timerInt = setInterval(countdown, 1000);
 
-function countdown() {
-    if (countdownTime === -1) {
-    clearTimeout(timerId);
+// function countdown() {
+//     if (countdownTime === -1) {
+//     clearTimeout(timerInt);
+//     startAudio.pause();
+//     displayBoard();
+//     } else {
+//     timer.innerText = countdownTime;
+//     countdownTime--;
+//     }
+// }
+
+
+let countdownTime = 99;
+let timeinterval;
+let isStarted = true;
+
+// Function to start Timer
+function startTimer() {
+  if (isStarted) {
+    isStarted = false;
+    timer.innerHTML = countdownTime;
+    timeinterval = setInterval(displayTime, 1000);
+  }
+};
+
+function displayTime() {
+  countdownTime -= 1;
+  timer.innerHTML = countdownTime;
+  
+  if (countdownTime === 0) {
+    isStarted = true;
+    clearInterval(timeinterval);
+    countdownTime = 99;
     startAudio.pause();
     displayBoard();
-    } else {
-    timer.innerText = countdownTime;
-    countdownTime--;
-    }
-}
+  }
+};
 
 function calcpercent() {
     let result = Math.round((array.length * 100) / 90);
@@ -124,7 +151,7 @@ onEvent('click', start, function() {
     appendWord();
     startAudio.play();
     input.focus();
-    countdown();
+    startTimer();
     restart.classList = 'is-visible';
     start.classList.add("not-visible");
     timer.style.display = 'block';
@@ -140,3 +167,28 @@ overlay.addEventListener('click', () => {
     overlay.style.display = "none";
 });
 
+let modal = getElement("game-modal");
+let span = select(".close-modal");
+
+window.addEventListener("load", (event) => {
+    setTimeout(() => {
+        modal.classList.add('is-visible');
+    }, 1000)
+});
+
+span.onclick = function() {
+    modal.classList.remove('is-visible');
+}
+
+
+function sleep(duration) {
+    return new Promise(resolve => {
+        setTimeout(resolve, duration);
+    })
+}
+
+const intro = select('.intro');
+const more = select('.more-intro');
+
+sleep(300).then(() => intro.classList.add('is-visible'));
+sleep(6000).then(() => more.classList.add('is-visible'));
