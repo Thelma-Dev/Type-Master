@@ -1,6 +1,6 @@
 ## TypeMaster
 
-How fast can you type? Play this game to check your typing speed.
+Solve the quest and redeem your title as type master. How fast can you type? 
 
 
 ### Demo
