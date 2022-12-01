@@ -2,7 +2,7 @@
 
 import Score from './Score.js';
 
-import { onEvent, getElement, select, date } from './utility.js';
+import { onEvent, getElement, select, date } from './Utility.js';
 
 const form = select('form');
 const display = select('.word-box');
