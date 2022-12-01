@@ -9,6 +9,7 @@ const display = select('.word-box');
 const input = select('.input');
 const start = select('.start-game');
 const restart = getElement('restart');
+const restartBtn = select('.restart');
 const hits = select('.hits p');
 const timer = select('.timer');
 const datePost = `${date()}`;
@@ -72,7 +73,7 @@ function appendWord() {
             console.log('correct');
             let inner = `${count}` ; 
             array.push(inner);
-            hits.innerHTML = `${count}`;
+            hits.innerHTML = `Hints: ${count}`;
             points.innerHTML = `${count}`;
             input.value = '';
             selectedWord.innerText = randomWord();
@@ -115,6 +116,10 @@ onEvent('click', restart, () => {
     window.location.reload()
 })
 
+onEvent('click', restartBtn, () => {
+    window.location.reload()
+})
+
 onEvent('click', start, function() {
     appendWord();
     startAudio.play();
@@ -130,4 +135,8 @@ close.addEventListener('click', () => {
     overlay.style.display = "none";
 });
 
+overlay.addEventListener('click', () => {
+    scoreBoard.style.display = "none";
+    overlay.style.display = "none";
+});
 
