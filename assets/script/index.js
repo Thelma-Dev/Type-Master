@@ -26,6 +26,9 @@ const startAudio = new Audio('./assets/audio/background.mp3');
 startAudio.type = 'audio/mp3';
 startAudio.loop = true;
 
+const hitAudio = new Audio('./assets/audio/slash.wav');
+hitAudio.type = 'audio/wav';
+
 
 const words = ['dinosaur', 'love', 'pineapple', 'calendar', 'robot', 'building', 'population',
 'weather', 'bottle', 'history', 'dream', 'character', 'money', 'absolute',
@@ -71,17 +74,17 @@ function appendWord() {
         const wordRandom = selectedWord;
         let wordInput = input.value.trim().toLowerCase();
         if (wordInput === wordRandom.innerText) {
-            console.log('correct');
+            hitAudio.play();
             let inner = `${count}` ; 
             array.push(inner);
-            hits.innerHTML = `Hints: ${count}`;
+            hits.innerHTML = `Hits: ${count}`;
             points.innerHTML = `${count}`;
             input.value = '';
             selectedWord.innerText = randomWord();
             count++;
 
             const score = new Score(datePost, array.length, calcpercent());
-            percent.innerText = `Percentage: ${score.percentage}%`
+            percent.innerText = `Progress: ${score.percentage}%`
         }
     });
 }
@@ -102,7 +105,7 @@ function startTimer() {
 function displayTime() {
   countdownTime -= 1;
   timer.innerHTML = countdownTime;
-  
+
   if (countdownTime === 0) {
     isStarted = true;
     clearInterval(timeinterval);
@@ -122,6 +125,17 @@ function displayBoard() {
     overlay.style.display = "block";
 }
 
+function startGame() {
+    appendWord();
+    startAudio.play();
+    input.removeAttribute('disabled');
+    input.focus();
+    startTimer();
+    restart.classList = 'is-visible';
+    start.classList.add("not-visible");
+    timer.style.display = 'block';
+}
+
 
 // Event listeners
 onEvent('click', restart, () => {
@@ -133,13 +147,7 @@ onEvent('click', restartBtn, () => {
 })
 
 onEvent('click', start, function() {
-    appendWord();
-    startAudio.play();
-    input.focus();
-    startTimer();
-    restart.classList = 'is-visible';
-    start.classList.add("not-visible");
-    timer.style.display = 'block';
+    startGame();
 })
 
 close.addEventListener('click', () => {
@@ -156,6 +164,7 @@ let modal = getElement("game-modal");
 let span = select(".close-modal");
 
 window.addEventListener("load", (event) => {
+    event.preventDefault();
     setTimeout(() => {
         modal.classList.add('is-visible');
     }, 1000)
@@ -164,7 +173,6 @@ window.addEventListener("load", (event) => {
 span.onclick = function() {
     modal.classList.remove('is-visible');
 }
-
 
 function sleep(duration) {
     return new Promise(resolve => {
@@ -176,4 +184,4 @@ const intro = select('.intro');
 const more = select('.more-intro');
 
 sleep(300).then(() => intro.classList.add('is-visible'));
-sleep(6000).then(() => more.classList.add('is-visible'));
+sleep(5000).then(() => more.classList.add('is-visible'));

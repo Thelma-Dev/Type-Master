@@ -11,6 +11,7 @@
 
 body {
     background: rgb(54, 54, 54, 0.9) url("../img/background.jpg") center center / cover no-repeat;
+    backdrop-filter: grayscale(25%);
     height: 100vh;
     overflow: hidden;
 }
@@ -41,15 +42,16 @@ main {
 .game {
     border: none;
     padding: 15px;
-    width: 500px;
+    width: 600px;
+    height: 300px;
     display: flex;
     flex-direction: column;
-    margin: 180px auto;
+    margin: 160px auto;
 }
 .word-box {
-    width: 350px;
-    height: 50px;
-    padding: 0 15px;
+    width: 450px;
+    height: 100px;
+    padding: 16px;
     border-radius: 24px;
     background-color: rgba(59, 59, 59, 1);
     box-shadow: 1px 1px 1px 0 rgba(0, 0, 0, 0.2) inset, -1px -1px 1px 0 rgba(255, 255, 255, 0.1) inset;
@@ -58,9 +60,9 @@ main {
 }
 
 .wordbox-p {
-    font-size: 18px;
+    font-size: 45px;
     font-weight: 400;
-    color: #f2f4f6;
+    color: #f87325;
     line-height: 52px;
     cursor: default;
     user-select: none;
@@ -438,6 +440,21 @@ button:hover {
     .timer {
         top: 3%;
         right: 8%;
+    }
+
+    .game {
+        padding: 15px;
+        width: 460px;
+        height: 200px;
+    }
+    .word-box {
+        width: 350px;
+        height: 100px;
+        padding: 16px;
+    }
+    
+    .wordbox-p {
+        font-size: 40px;
     }
     
 }
