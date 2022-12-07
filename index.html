@@ -7,7 +7,7 @@
         <meta name="description" content="Game">
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" >
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Electrolize&family=Montserrat:wght@400;600;700&display=swap" >
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         <title>TypeMaster</title>
         <link rel="shortcut icon" href="assets/img/favicon.png?v=2" type="image/x-icon">
@@ -17,16 +17,29 @@
     <body>
         <main>
             <div class="container">
-                <div id="game-modal" class="modal">
-                    <div class="content">
-                      <span class="close-modal">&times;</span>
-                      <h2>Task</h2>
-                      <p class="intro">You have been trapped. Only one way out, redeem your title as the type-master.</p>
-                      <p class="more-intro">99 seconds! type as many words as you see on the screen. How fast can you type?</p>
+                <dialog>
+                      <h2>Challenge</h2>
+                      <p>Redeem your title as the type-master.</p>
+                      <p>99 seconds! type as many words as you see on the screen. How fast can you type?</p>
+                      <button class="start-me">Start Game</button>
+                </dialog>
+                <div class="counter">
+                    <div class="number">
+                      <span class="in">3</span>
+                      <span>2</span>
+                      <span>1</span>
+                      <!-- <span>0</span> -->
                     </div>
-                  </div>
+                    <h4>Get Ready</h4>
+                </div>
+                <div class="final">
+                    <h1>GO</h1>
+                </div>
                 <div class="overlay"></div>
                 <div class="game">
+                    <div class="hits">
+                        <p>Hits: 0 </p>
+                    </div>
                     <div class="word-box"></div>
                     <form>
                         <input type="text" class="input" placeholder="Enter word" disabled required>
@@ -50,10 +63,6 @@
                         <p class="percent">Progress: </p>
                     </div>
                     <button class="restart">Restart</button>
-                </div>
-
-                <div class="hits">
-                    <p>Hits: </p>
                 </div>
 
                 <div class="timer"></div>

@@ -4,7 +4,6 @@ import Score from './Score.js';
 
 import { onEvent, getElement, select, date } from './Utility.js';
 
-const form = select('form');
 const display = select('.word-box');
 const input = select('.input');
 const start = select('.start-game');
@@ -22,12 +21,18 @@ const close = select('.close');
 const array = [];
 
 
-const startAudio = new Audio('./assets/audio/background.mp3');
+const startAudio = new Audio('./assets/audio/bg.mp3');
 startAudio.type = 'audio/mp3';
 startAudio.loop = true;
 
-const hitAudio = new Audio('./assets/audio/slash.wav');
+const hitAudio = new Audio('./assets/audio/score.wav');
 hitAudio.type = 'audio/wav';
+
+const countAudio = new Audio('./assets/audio/count.mp3');
+countAudio.type = 'audio/mp3';
+
+const gameoverAudio = new Audio('./assets/audio/gameover.wav');
+gameoverAudio.type = 'audio/wav';
 
 
 const words = ['dinosaur', 'love', 'pineapple', 'calendar', 'robot', 'building', 'population',
@@ -111,9 +116,24 @@ function displayTime() {
     clearInterval(timeinterval);
     countdownTime = 99;
     startAudio.pause();
+    gameoverAudio.play();
     displayBoard();
   }
 };
+
+function stopTimer() {
+    clearInterval(timeinterval);
+}
+
+function resetTime() {
+    stopTimer();
+
+    setTimeout(() => {
+        countdownTime = 99;
+        timer.innerHTML = countdownTime;
+        timeinterval = setInterval(displayTime, 1000);
+    }, 4500)
+}
 
 function calcpercent() {
     let result = Math.round((array.length * 100) / 90);
@@ -126,6 +146,8 @@ function displayBoard() {
 }
 
 function startGame() {
+    finalMessage.classList.remove('show');
+    overlay.style.display = "none";
     appendWord();
     startAudio.play();
     input.removeAttribute('disabled');
@@ -136,14 +158,66 @@ function startGame() {
     timer.style.display = 'block';
 }
 
+const number = document.querySelectorAll('.number span');
+const counter = select('.counter');
+const finalMessage = document.querySelector('.final');
+
+
+function resetDOM() {
+  counter.classList.remove('hide');
+  finalMessage.classList.remove('show');
+    
+  number.forEach(num => {
+    num.classList.value = '';
+  });
+
+    number[0].classList.add('in');
+}
+
+function runAnimation() {
+  number.forEach((num, index) => {
+    const penultimate = number.length - 1;
+    num.addEventListener('animationend', (e) => {
+      if(e.animationName === 'goIn' && index !== penultimate){
+        num.classList.remove('in');
+        num.classList.add('out');
+      } else if (e.animationName === 'goOut' && num.nextElementSibling){
+        num.nextElementSibling.classList.add('in');
+      } else {
+        counter.classList.add('hide');
+        finalMessage.classList.add('show');
+      }
+    });
+  });
+  countAudio.play();
+}
+
+function restartGame() {
+    startAudio.pause();
+    input.value = '';
+    let count = 0;
+    hits.innerHTML = `Hits: ${count}`
+    display.innerHTML = '';
+    resetDOM()
+    resetTime()
+    startCounter.style.display = "block"
+    overlay.style.display = "block"
+    runAnimation();
+    setTimeout(() => {
+        startGame();
+    }, 4500);
+}
+
 
 // Event listeners
 onEvent('click', restart, () => {
-    window.location.reload()
+    restartGame();
 })
 
 onEvent('click', restartBtn, () => {
-    window.location.reload()
+    scoreBoard.style.display = "none";
+    overlay.style.display = "none";
+    restartGame();
 })
 
 onEvent('click', start, function() {
@@ -160,28 +234,32 @@ overlay.addEventListener('click', () => {
     overlay.style.display = "none";
 });
 
-let modal = getElement("game-modal");
-let span = select(".close-modal");
 
-window.addEventListener("load", (event) => {
-    event.preventDefault();
-    setTimeout(() => {
-        modal.classList.add('is-visible');
-    }, 1000)
+
+// Modal
+const dialog = select('dialog');
+const dialogStart = select('.start-me');
+const startCounter = select('.counter');
+
+window.addEventListener("load", () => {
+    dialog.showModal();
 });
 
-span.onclick = function() {
-    modal.classList.remove('is-visible');
-}
+onEvent('click', dialogStart, () => {
+    dialog.close()
+    startCounter.style.display = "block"
+    overlay.style.display = "block"
+    runAnimation();
+    setTimeout(() => {
+        startGame();
+    }, 4500);
+})
 
-function sleep(duration) {
-    return new Promise(resolve => {
-        setTimeout(resolve, duration);
-    })
-}
+onEvent('click', dialog, function(event) {
+    const rect = this.getBoundingClientRect();
 
-const intro = select('.intro');
-const more = select('.more-intro');
-
-sleep(300).then(() => intro.classList.add('is-visible'));
-sleep(5000).then(() => more.classList.add('is-visible'));
+    if (event.clientY < rect.top  || event.clientY > rect.bottom ||
+        event.clientX < rect.left || event.clientX > rect.right) {
+            dialog.close();
+    }
+});
