@@ -559,8 +559,8 @@ h4 {
     
     dialog p {
         margin-top: 20px;    
-        font-size: 18px;
-        text-align: left;
+        font-size: 20px;
+        text-align: center;
     }
 
     dialog .start-game {
@@ -571,6 +571,7 @@ h4 {
     .start-game {
         right: 8%;
     }
+
 
     #restart {
         left: 8%;
