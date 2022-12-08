@@ -177,9 +177,8 @@ function displayScores() {
 
     storeHits.innerHTML = scores.map((score) => 
       `${score.hits} words || ${score.progress}% <br>`
-    )
+    ) .join('');
     highScoreBoard.append(storeHits);
-
 }
 
 function startGame() {
