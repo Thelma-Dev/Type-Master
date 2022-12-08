@@ -8,13 +8,15 @@ const display = select('.word-box');
 const input = select('.input');
 const start = select('.start-game');
 const restart = getElement('restart');
-const restartBtn = select('.restart');
+const restartBtn = getElement('game-restart');
 const hits = select('.hits p');
 const timer = select('.timer');
 const datePost = `${date()}`;
 const displayDate = select('.date');
 const overlay = select('.overlay');
 const scoreBoard = select('.scoreboard');
+const highScore = select('.score-store');
+const highScoreBoard = select('.inner-box');
 const points = select('.point');
 const percent = select('.percent');
 const close = select('.close');
@@ -65,36 +67,42 @@ function randomWord() {
     return word;
 };
 
+let scoreArray = [];
+let itemArray = [];
 function appendWord() {
     // To append the randomword to the word box
     let selectedWord = document.createElement('p');
     selectedWord.classList.add("wordbox-p");
     selectedWord.innerText = randomWord();
     display.append(selectedWord);
-
+   
 
     let count = 1;
+    let inner;
     onEvent('keyup', input, () => {
 
         const wordRandom = selectedWord;
         let wordInput = input.value.trim().toLowerCase();
         if (wordInput === wordRandom.innerText) {
             hitAudio.play();
-            let inner = `${count}` ; 
+            inner = `${count}` ; 
             array.push(inner);
             hits.innerHTML = `Hits: ${count}`;
             points.innerHTML = `${count}`;
             input.value = '';
             selectedWord.innerText = randomWord();
-            count++;
-
-            const score = new Score(datePost, array.length, calcpercent());
-            percent.innerText = `Progress: ${score.percentage}%`
+            count++; 
         }
+        let score = new Score(datePost, inner, calcpercent());
+        percent.innerText = `Progress: ${score.percentage}%`
+        let scoreObject = { hits: score.hits, progress: score.percentage };
+        scoreArray.push(scoreObject);
     });
-}
+  array.splice(0); 
+} 
 
-let countdownTime = 99;
+
+let countdownTime = 10;
 let timeinterval;
 let isStarted = true;
 
@@ -108,13 +116,13 @@ function startTimer() {
 };
 
 function displayTime() {
-  countdownTime -= 1;
+  countdownTime --;
   timer.innerHTML = countdownTime;
 
   if (countdownTime === 0) {
     isStarted = true;
     clearInterval(timeinterval);
-    countdownTime = 99;
+    countdownTime = 10;
     startAudio.pause();
     gameoverAudio.play();
     displayBoard();
@@ -129,20 +137,49 @@ function resetTime() {
     stopTimer();
 
     setTimeout(() => {
-        countdownTime = 99;
-        timer.innerHTML = countdownTime;
-        timeinterval = setInterval(displayTime, 1000);
+      countdownTime = 10
+      timer.innerHTML = countdownTime;
+      timeinterval = setInterval(displayTime, 1000);
     }, 4500)
 }
 
 function calcpercent() {
-    let result = Math.round((array.length * 100) / 90);
+    let num = Math.floor((array.length * 100) / 90);
+    let result = num.toFixed(2);
     return result;
 }
 
 function displayBoard() {
     scoreBoard.style.display = "block";
     overlay.style.display = "block";
+    highScore.classList.add('is-visible');
+    displayScores();
+}
+
+
+let storeHits = document.createElement('div');
+storeHits.classList.add("box");
+
+function storeScore() {
+    
+    let lastItem = scoreArray[scoreArray.length - 1];
+    itemArray.push(lastItem);
+    itemArray.sort((s1, s2) => (s1.hits < s2.hits) ? 1 : (s1.hits > s2.hits) ? -1 : 0); 
+    itemArray.splice(9);
+
+    localStorage.setItem('scores', JSON.stringify(itemArray));
+    console.log(localStorage);
+}
+
+function displayScores() {
+    storeScore();
+    const scores = JSON.parse(localStorage.getItem('scores'));
+
+    storeHits.innerHTML = scores.map((score) => 
+      `${score.hits} words || ${score.progress}% <br>`
+    )
+    highScoreBoard.append(storeHits);
+
 }
 
 function startGame() {
@@ -217,21 +254,26 @@ onEvent('click', restart, () => {
 onEvent('click', restartBtn, () => {
     scoreBoard.style.display = "none";
     overlay.style.display = "none";
+    highScore.classList.remove('is-visible');
+    startTimer();
     restartGame();
 })
 
-onEvent('click', start, function() {
-    startGame();
+onEvent('click', start, function(event) {
+  event.preventDefault();
+  startGame();
 })
 
 close.addEventListener('click', () => {
     scoreBoard.style.display = "none";
     overlay.style.display = "none";
+    highScore.classList.remove('is-visible');
 });
 
 overlay.addEventListener('click', () => {
     scoreBoard.style.display = "none";
     overlay.style.display = "none";
+    highScore.classList.remove('is-visible');
 });
 
 
