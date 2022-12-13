@@ -154,8 +154,8 @@ function calcpercent() {
 function displayBoard() {
     scoreBoard.style.display = "block";
     overlay.style.display = "block";
-    highScore.classList.add('is-visible');
-    displayScores();
+    // highScore.classList.add('is-visible');
+    // displayScores();
 }
 
 
@@ -173,23 +173,19 @@ function storeScore() {
     console.log(localStorage);
 }
 
+
 function displayScores() {
     storeScore();
     const scores = JSON.parse(localStorage.getItem('scores'));
 
     if(localStorage.length > 0) {
-      
-      // for(const score of scores) {
-      //   let oldScores = `${score.hits} words || ${score.progress}% <br>`
-      //   highScoreBoard.append(oldScores);
-      // }
-      
       storeHits.innerHTML = scores.map((score) => 
         `${score.hits} words || ${score.progress}% <br>`
       ) .join('');
       highScoreBoard.append(storeHits);
     }
 }
+
 
 function startGame() {
     finalMessage.classList.remove('show');
@@ -277,13 +273,13 @@ onEvent('click', start, function(event) {
 close.addEventListener('click', () => {
     scoreBoard.style.display = "none";
     overlay.style.display = "none";
-    highScore.classList.remove('is-visible');
+    // highScore.classList.remove('is-visible');
 });
 
 overlay.addEventListener('click', () => {
     scoreBoard.style.display = "none";
     overlay.style.display = "none";
-    highScore.classList.remove('is-visible');
+    // highScore.classList.remove('is-visible');
 });
 
 onEvent('click', showHighScore, () => {

@@ -461,8 +461,9 @@ dialog .start-me {
 }
 
 .final h1 {
-    width: 450px;
-    height: 250px;
+    width: 480px;
+    height: 300px;
+    padding: 15px;
     font-size: 11rem;
     text-align: center;
     color: var(--app-orange);
@@ -574,7 +575,7 @@ h4 {
     dialog .start-me {
         position: fixed;
         top: 66%;
-        right: 36%;
+        right: 34%;
     }
 
     .start-game {
