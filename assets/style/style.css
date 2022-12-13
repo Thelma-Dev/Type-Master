@@ -559,7 +559,12 @@ h4 {
 
 /* 500px and down */
 @media (max-width: 500px) {
-    
+    dialog {
+        height: 360px;
+        padding: 20px;
+    }
+
+
     dialog p {
         margin-top: 20px;    
         font-size: 20px;
@@ -588,12 +593,13 @@ h4 {
 
     .game {
         border: none;
-        padding: 15px;
-        width: 460px;
+        padding: 10px;
+        width: 400px;
         height: 250px;
+        margin: 150px auto;
     }
     .word-box {
-        width: 400px;
+        width: 350px;
         height: 150px;
         padding: 16px;
     }
