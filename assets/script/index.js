@@ -20,6 +20,7 @@ const highScoreBoard = select('.inner-box');
 const points = select('.point');
 const percent = select('.percent');
 const close = select('.close');
+const showHighScore = select('.show-highscore');
 const array = [];
 
 
@@ -102,7 +103,7 @@ function appendWord() {
 } 
 
 
-let countdownTime = 10;
+let countdownTime = 90;
 let timeinterval;
 let isStarted = true;
 
@@ -122,9 +123,10 @@ function displayTime() {
   if (countdownTime === 0) {
     isStarted = true;
     clearInterval(timeinterval);
-    countdownTime = 10;
+    countdownTime = 90;
     startAudio.pause();
     gameoverAudio.play();
+    input.setAttribute("disabled", " ")
     displayBoard();
   }
 };
@@ -137,7 +139,7 @@ function resetTime() {
     stopTimer();
 
     setTimeout(() => {
-      countdownTime = 10
+      countdownTime = 90
       timer.innerHTML = countdownTime;
       timeinterval = setInterval(displayTime, 1000);
     }, 4500)
@@ -165,8 +167,8 @@ function storeScore() {
     let lastItem = scoreArray[scoreArray.length - 1];
     itemArray.push(lastItem);
     itemArray.sort((s1, s2) => (s1.hits < s2.hits) ? 1 : (s1.hits > s2.hits) ? -1 : 0); 
-    itemArray.splice(9);
-
+    itemArray.splice(3);
+    
     localStorage.setItem('scores', JSON.stringify(itemArray));
     console.log(localStorage);
 }
@@ -175,10 +177,18 @@ function displayScores() {
     storeScore();
     const scores = JSON.parse(localStorage.getItem('scores'));
 
-    storeHits.innerHTML = scores.map((score) => 
-      `${score.hits} words || ${score.progress}% <br>`
-    ) .join('');
-    highScoreBoard.append(storeHits);
+    if(localStorage.length > 0) {
+      
+      // for(const score of scores) {
+      //   let oldScores = `${score.hits} words || ${score.progress}% <br>`
+      //   highScoreBoard.append(oldScores);
+      // }
+      
+      storeHits.innerHTML = scores.map((score) => 
+        `${score.hits} words || ${score.progress}% <br>`
+      ) .join('');
+      highScoreBoard.append(storeHits);
+    }
 }
 
 function startGame() {
@@ -247,6 +257,7 @@ function restartGame() {
 
 // Event listeners
 onEvent('click', restart, () => {
+    startTimer();
     restartGame();
 })
 
@@ -274,6 +285,16 @@ overlay.addEventListener('click', () => {
     overlay.style.display = "none";
     highScore.classList.remove('is-visible');
 });
+
+onEvent('click', showHighScore, () => {
+
+  if(localStorage.length === 0) {
+    return false;
+  } else {
+    overlay.style.display = "block";
+    highScore.classList.add('is-visible');
+  }
+})
 
 
 
