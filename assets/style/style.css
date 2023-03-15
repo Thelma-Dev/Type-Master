@@ -117,7 +117,7 @@ input::placeholder {
 /*          buttons          */
 /* --------------------------*/
 
-.start-game, #restart, .start-me {
+.start-game, #restart{
     width: 150px;
     height: 46px;
     text-align: center;
@@ -134,6 +134,23 @@ input::placeholder {
     position: fixed;
     top: 7%;
     right: 20%;
+}
+
+.start-me {
+    width: 150px;
+    height: 46px;
+    text-align: center;
+    background-color: var(--app-orange);
+    border: none;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 26px 30px -10px, rgba(0, 0, 0, 0.1) 0px 16px 10px -10px;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    transition: all 0.25s ease-in-out;
+    color: #fff;
+    cursor: pointer;
+    margin-top: 25px;
 }
 
 #restart {
@@ -573,10 +590,8 @@ h4 {
         text-align: center;
     }
 
-    dialog .start-me {
-        position: fixed;
-        top: 66%;
-        right: 34%;
+    .start-me {
+        margin-top: 35px;
     }
 
     .start-game {
