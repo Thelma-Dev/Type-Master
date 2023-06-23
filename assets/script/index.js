@@ -8,14 +8,14 @@ const display = select('.word-box');
 const input = select('.input');
 const start = select('.start-game');
 const restart = getElement('restart');
-const restartBtn = getElement('game-restart');
+const restartBtn = getElement('scoreboard-game-restart');
 const hits = select('.hits p');
 const timer = select('.timer');
 const datePost = `${date()}`;
 const displayDate = select('.date');
 const overlay = select('.overlay');
 const scoreBoard = select('.scoreboard');
-const highScore = select('.score-store');
+const highScore = select('.score-storage');
 const highScoreBoard = select('.inner-box');
 const points = select('.point');
 const percent = select('.percent');
@@ -69,7 +69,9 @@ function randomWord() {
 };
 
 let scoreArray = [];
-let itemArray = [];
+const today = new Date().toLocaleDateString('en-ca', { year:"numeric", month:"short", day:"numeric"});
+
+
 function appendWord() {
     // To append the randomword to the word box
     let selectedWord = document.createElement('p');
@@ -96,14 +98,14 @@ function appendWord() {
         }
         let score = new Score(datePost, inner, calcpercent());
         percent.innerText = `Progress: ${score.percentage}%`
-        let scoreObject = { hits: score.hits, progress: score.percentage };
+        let scoreObject = { date:today, hits: score.hits, progress: score.percentage };
         scoreArray.push(scoreObject);
     });
   array.splice(0); 
 } 
 
 
-let countdownTime = 90;
+let countdownTime = 80;
 let timeinterval;
 let isStarted = true;
 
@@ -123,7 +125,7 @@ function displayTime() {
   if (countdownTime === 0) {
     isStarted = true;
     clearInterval(timeinterval);
-    countdownTime = 90;
+    countdownTime = 80;
     startAudio.pause();
     gameoverAudio.play();
     input.setAttribute("disabled", " ")
@@ -136,26 +138,26 @@ function stopTimer() {
 }
 
 function resetTime() {
-    stopTimer();
+  stopTimer();
 
-    setTimeout(() => {
-      countdownTime = 90
-      timer.innerHTML = countdownTime;
-      timeinterval = setInterval(displayTime, 1000);
-    }, 4500)
+  setTimeout(() => {
+    countdownTime = 80
+    timer.innerHTML = countdownTime;
+    timeinterval = setInterval(displayTime, 1000);
+  }, 4500)
 }
 
 function calcpercent() {
-    let num = Math.floor((array.length * 100) / 90);
-    let result = num.toFixed(2);
-    return result;
+  let num = Math.floor((array.length * 100) / 90);
+  let result = num.toFixed(2);
+  return result;
 }
 
 function displayBoard() {
-    scoreBoard.style.display = "block";
-    overlay.style.display = "block";
-    //highScore.classList.add('is-visible');
-    //displayScores();
+  scoreBoard.style.display = "block";
+  overlay.style.display = "block";
+  highScore.classList.add('is-visible');
+  displayScores();
 }
 
 
@@ -163,27 +165,36 @@ let storeHits = document.createElement('div');
 storeHits.classList.add("box");
 
 function storeScore() {
-    
-    let lastItem = scoreArray[scoreArray.length - 1];
-    itemArray.push(lastItem);
-    itemArray.sort((s1, s2) => (s1.hits < s2.hits) ? 1 : (s1.hits > s2.hits) ? -1 : 0); 
-    itemArray.splice(3);
-    
-    localStorage.setItem('scores', JSON.stringify(itemArray));
-    console.log(localStorage);
+  let lastItem = scoreArray[scoreArray.length - 1];
+
+  // get existing items in the local storage 
+  const scores = JSON.parse(localStorage.getItem('scores') || "[]");
+  scores.push(lastItem);
+  
+  localStorage.setItem('scores', JSON.stringify(scores));
 }
 
 
-function displayScores() {
-    storeScore();
-    const scores = JSON.parse(localStorage.getItem('scores'));
+function retrieveScore () {
+  const scores = JSON.parse(localStorage.getItem('scores' || "[]"));
+  scores.sort((s1, s2) => s2.hits - s1.hits);
 
-    if(localStorage.length > 0) {
-      storeHits.innerHTML = scores.map((score) => 
-        `${score.hits} words || ${score.progress}% <br>`
-      ) .join('');
-      highScoreBoard.append(storeHits);
-    }
+  // Get top 5 scores
+  if(scores.length > 5) {
+    scores.splice(5);
+  }
+
+  if(scores.length > 0) {
+    storeHits.innerHTML = scores.map((score) => 
+      `${score.hits} words || ${score.progress}% <br>`
+    ) .join('');
+    highScoreBoard.append(storeHits);
+  }
+}
+
+function displayScores() {
+  storeScore();
+  retrieveScore();
 }
 
 
@@ -273,30 +284,27 @@ onEvent('click', start, function(event) {
 close.addEventListener('click', () => {
     scoreBoard.style.display = "none";
     overlay.style.display = "none";
-    // highScore.classList.remove('is-visible');
+    highScore.classList.remove('is-visible');
 });
 
 overlay.addEventListener('click', () => {
     scoreBoard.style.display = "none";
     overlay.style.display = "none";
-    // highScore.classList.remove('is-visible');
+    highScore.classList.remove('is-visible');
 });
 
 onEvent('click', showHighScore, () => {
-
-  if(localStorage.length === 0) {
-    return false;
-  } else {
     overlay.style.display = "block";
     highScore.classList.add('is-visible');
-  }
+    highScore.style.display = 'block';
+    retrieveScore();
 })
 
 
 
 // Modal
 const dialog = select('dialog');
-const dialogStart = select('.start-me');
+const dialogStart = select('.dialog-start-game');
 const startCounter = select('.counter');
 
 window.addEventListener("load", () => {

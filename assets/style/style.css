@@ -28,6 +28,9 @@ body {
 
 main {
     padding: 60px 0;
+    display: grid;
+    place-items: center;
+    height: 100vh;
 }
 
 .overlay {
@@ -49,8 +52,8 @@ main {
     border: none;
     padding: 15px;
     width: 600px;
-    height: 320px;
-    height: calc(var(--vh, 1vh) * 100);
+    height: 300px;
+    /* height: calc(var(--vh, 1vh) * 100); */
     display: flex;
     flex-direction: column;
     margin: 120px auto;
@@ -136,7 +139,7 @@ input::placeholder {
     right: 20%;
 }
 
-.start-me {
+.dialog-start-game {
     width: 150px;
     height: 46px;
     text-align: center;
@@ -201,7 +204,7 @@ button:hover {
     transition: all 0.3s ease-in-out;
 }
 
-#game-restart {
+#scoreboard-game-restart {
     width: 150px;
     height: 46px;
     text-align: center;
@@ -308,13 +311,13 @@ button:hover {
 }
 
 /* -------------------------- */
-/*           score-store     */
+/*         score-storage     */
 /* --------------------------*/
 
-.score-store {
+.score-storage {
     position: fixed;
-    top: 3px;
-    left: 78%;
+    top: 0;
+    right: 0;
     height: 100vh;
     margin: 0;
     width: 300px;
@@ -328,12 +331,12 @@ button:hover {
     opacity: 0;
 }
 
-.score-store.is-visible {
+.score-storage.is-visible {
     visibility: visible;
     opacity: 1;
 }
 
-.score-store h4 {
+.score-storage h4 {
     font-size: 18px;
     text-align: center;
     color: #fff;
@@ -345,7 +348,6 @@ button:hover {
     height:100%;
     display: flex;
     flex-direction: row;
-    /* justify-content: space-between; */
 }
 
 .box {
@@ -571,13 +573,37 @@ h4 {
   text-transform: uppercase;
 }
 
+/* -------------------------------- */
+/* Show Highscore                   */
+/* -------------------------------- */
+
+
+.show-highscore {
+    position: fixed;
+    bottom: 5%;
+    right: 20%;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: var(--app-orange);
+}
+
+.show-highscore i {
+    font-size: 25px;
+    color: #fff;
+}
+
+.show-highscore:hover {
+    background-color: var(--app-orange-hover);
+}
+
 
 /* -------------------------------- */
 /* Media queries                    */
 /* -------------------------------- */
 
 /* 500px and down */
-@media (max-width: 500px) {
+@media only screen and (max-width: 500px) {
     dialog {
         height: 360px;
         padding: 20px;
@@ -590,17 +616,19 @@ h4 {
         text-align: center;
     }
 
-    .start-me {
+    .dialog-start-game {
         margin-top: 35px;
     }
 
     .start-game {
         right: 8%;
+        width: 130px;
     }
 
 
     #restart {
         left: 8%;
+        width: 130px;
     }
 
     .timer {
@@ -625,11 +653,8 @@ h4 {
         font-size: 40px;
     }
 
-    .score-store {
-        top: 3px;
-        left: 48%;
-        height: 100vh;
-        width: 250px;
+    .score-storage {
+        width: 200px;
         padding: 8px;
         z-index: 444;
     }
@@ -662,3 +687,99 @@ h4 {
     }
     
 }
+
+/* 380px and down */
+@media only screen and (max-width: 390px) {
+    dialog {
+        height: 360px;
+        padding: 20px;
+    }
+
+
+    dialog p {
+        margin-top: 20px;    
+        font-size: 18px;
+        text-align: center;
+    }
+
+    .dialog-start-game {
+        margin-top: 35px;
+    }
+
+    .start-game {
+        right: 6%;
+        width: 130px;
+    }
+
+
+    #restart {
+        left: 8%;
+        width: 130px;
+    }
+
+    .timer {
+        top: 3%;
+        right: 8%;
+    }
+
+    .game {
+        border: none;
+        padding: 10px 0px;
+        width: 100%;
+        height: 250px;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    .word-box {
+        width: 100%;
+        height: 150px;
+        padding: 16px;
+    }
+
+    input[type="text"] {
+        width: 100%;
+        height: 50px;
+    }
+    
+    .wordbox-p {
+        font-size: 40px;
+    }
+
+    .score-storage {
+        width: 200px;
+        padding: 8px;
+        z-index: 444;
+    }
+
+    .box {
+        height: 30px;
+        padding: 3px;
+        text-align: center;
+        font-size: 18px;
+        color: var(--app-orange);
+    }
+
+    .show-highscore {
+        position: fixed;
+        bottom: 5%;
+        right: 10%;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: var(--app-orange);
+    }
+
+    .show-highscore i {
+        font-size: 25px;
+        color: #fff;
+    }
+
+    .show-highscore:hover {
+        background-color: var(--app-orange-hover);
+    }
+    
+}
+
