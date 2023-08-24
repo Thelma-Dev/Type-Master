@@ -155,8 +155,8 @@ function calcpercent() {
 
 function displayBoard() {
   scoreBoard.style.display = "block";
-  overlay.style.display = "block";
-  highScore.classList.add('is-visible');
+  // overlay.style.display = "block";
+  // highScore.classList.add('is-visible');
   displayScores();
 }
 
